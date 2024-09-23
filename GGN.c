@@ -67,6 +67,38 @@ int GGN_set_int(GGN *GGN_n, int number)
     }
     return 1;
 }
+int GGN_set_GGN(GGN *GGN_n1, GGN *GGN_n2)
+{
+    GGN_set_char_to_all(GGN_n2, '0');
+    GGN_n2->length = GGN_n1->length;
+    for (int index = 0; index < GGN_n2->length; index++)
+        GGN_n2->number[index] = GGN_n1->number[index];
+    return 1;
+}
+int GGN_n1_compare_with_n2(GGN *GGN_n1, GGN *GGN_n2)
+{
+    if (GGN_n1->length > GGN_n2->length)
+        return 1;
+    else if (GGN_n1->length < GGN_n2->length)
+        return -1;
+    unsigned long index = GGN_n1->length - 1;
+    while (index + 1)
+    {
+        if (GGN_n1->number[index] > GGN_n2->number[index])
+            return 1;
+        else if (GGN_n1->number[index] < GGN_n2->number[index])
+            return -1;
+        index--;
+    }
+    return 0;
+}
+int GGN_n_compare_with_int(GGN *GGN_n, int num)
+{
+    GGN *numInt = GGN_init("0");
+    GGN_set_int(numInt, num);
+    return GGN_n1_compare_with_n2(GGN_n, numInt);
+}
 int GGN_multiply(GGN *GGN_n1, GGN *GGN_n2, GGN *GGN_result)
 {
+    return 1;
 }

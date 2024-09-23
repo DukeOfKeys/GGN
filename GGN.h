@@ -38,6 +38,15 @@ int GGN_set_int(GGN *GGN_n, int number);
 /// @param GGN_n1
 /// @param GGN_n2
 /// @param GGN_result
-/// @return
+/// @return Operation status
 int GGN_multiply(GGN *GGN_n1, GGN *GGN_n2, GGN *GGN_result);
+/// @brief Sets GGN_n1 to GGN_n2
+/// @param GGN_n1
+/// @param GGN_n2
+/// @return Operation status
+int GGN_set_GGN(GGN *GGN_n1, GGN *GGN_n2);
+/// @brief Comparison of two numbers
+/// @return Returns 1 if n1 > n2, 0 if n1 == n2, -1 if n1 < n2
+int GGN_n1_compare_with_n2(GGN *GGN_n1, GGN *GGN_n2);
+int GGN_n_compare_with_int(GGN *GGN_n, int num);
 #endif
