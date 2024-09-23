@@ -67,3 +67,6 @@ int GGN_set_int(GGN *GGN_n, int number)
     }
     return 1;
 }
+int GGN_multiply(GGN *GGN_n1, GGN *GGN_n2, GGN *GGN_result)
+{
+}
