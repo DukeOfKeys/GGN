@@ -7,7 +7,6 @@
 #include <math.h>
 
 #define GGN_MAX_NUM_LEN 1000
-#define GGN_MAX_NUM_LEN_BINARY 500
 typedef struct GGN
 {
     unsigned char number[GGN_MAX_NUM_LEN];
@@ -50,4 +49,11 @@ int GGN_set_GGN(GGN *GGN_n1, GGN *GGN_n2);
 /// @return Returns 1 if n1 > n2, 0 if n1 == n2, -1 if n1 < n2
 int GGN_n1_compare_with_n2(GGN *GGN_n1, GGN *GGN_n2);
 int GGN_n_compare_with_int(GGN *GGN_n, int num);
+int GGN_n_add_int(GGN *GGN_n, int num, GGN *result);
+/// @brief init with no arguments
+/// @return
+GGN *GGN_i();
+GGN *GGN_init_int(int num);
+int GGN_mult_pow_10(GGN *, int power_of_10);
+int GGN_fast_mult(GGN *GGN_n1, GGN *GGN_n2, GGN *GGN_result);
 #endif
