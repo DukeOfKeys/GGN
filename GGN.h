@@ -34,12 +34,6 @@ void GGN_print(GGN *GGN_n);
 /// @param number Number that will be handaled (positive numbers reccomended)
 /// @return Operation status
 int GGN_set_int(GGN *GGN_n, int number);
-/// @brief Multiplication
-/// @param GGN_n1
-/// @param GGN_n2
-/// @param GGN_result
-/// @return Operation status
-int GGN_multiply(GGN *GGN_n1, GGN *GGN_n2, GGN *GGN_result);
 /// @brief Sets GGN_n1 to GGN_n2
 /// @param GGN_n1
 /// @param GGN_n2
@@ -55,5 +49,5 @@ int GGN_n_add_int(GGN *GGN_n, int num, GGN *result);
 GGN *GGN_i();
 GGN *GGN_init_int(int num);
 int GGN_mult_pow_10(GGN *, int power_of_10);
-int GGN_fast_mult(GGN *GGN_n1, GGN *GGN_n2, GGN *GGN_result);
+int GGN_mult(GGN *GGN_n1, GGN *GGN_n2, GGN *GGN_result);
 #endif

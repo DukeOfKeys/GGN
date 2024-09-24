@@ -103,7 +103,7 @@ int GGN_n_add_int(GGN *GGN_n, int num, GGN *result)
 {
     return 1;
 }
-int GGN_fast_mult(GGN *GGN_n1, GGN *GGN_n2, GGN *GGN_result)
+int GGN_mult(GGN *GGN_n1, GGN *GGN_n2, GGN *GGN_result)
 {
     GGN *GGN_result_oper = GGN_init_int(0);
     GGN *GGN_final = GGN_init_int(0);
@@ -125,20 +125,6 @@ int GGN_fast_mult(GGN *GGN_n1, GGN *GGN_n2, GGN *GGN_result)
         GGN_sum(GGN_final, GGN_result_oper, GGN_final);
     }
     GGN_set_GGN(GGN_final, GGN_result);
-    return 1;
-}
-int GGN_multiply(GGN *GGN_n1, GGN *GGN_n2, GGN *GGN_result)
-{
-    GGN *counter = GGN_init_int(0);
-    GGN *one = GGN_init_int(1);
-    GGN *mediumResult = GGN_init_int(0);
-    for (; GGN_n1_compare_with_n2(GGN_n2, counter) == 1; GGN_sum(counter, one, counter))
-        GGN_sum(mediumResult, GGN_n1, mediumResult);
-
-    GGN_set_GGN(mediumResult, GGN_result);
-    free(counter);
-    free(one);
-    free(mediumResult);
     return 1;
 }
 int GGN_mult_pow_10(GGN *GGN_n, int power_of_10)
