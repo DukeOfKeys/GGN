@@ -103,16 +103,3 @@ int GGN_multiply(GGN *GGN_n1, GGN *GGN_n2, GGN *GGN_result)
 {
     return 1;
 }
-GGN_binary *GGN_init_binary(int num)
-{
-    GGN_binary *GGN_bin = malloc(sizeof(GGN_binary));
-    if (GGN_bin == NULL)
-    {
-        abort();
-    }
-    for (int index = 0; (index < sizeof(num)) && (index < GGN_MAX_NUM_LEN_BINARY); index++)
-    {
-        GGN_bin->number[index] = (num >> (8 * index)) & 255;
-    }
-    return GGN_bin;
-}

@@ -13,12 +13,6 @@ typedef struct GGN
     unsigned char number[GGN_MAX_NUM_LEN];
     unsigned long long length;
 } GGN;
-typedef struct GGN_binary
-{
-    unsigned char number[GGN_MAX_NUM_LEN_BINARY];
-    unsigned long long length;
-} GGN_binary;
-GGN_binary *GGN_init_binary(int num);
 /// @brief  Sum of two GGN numbers
 /// @param GGN_n1 first number
 /// @param GGN_n2 second number
