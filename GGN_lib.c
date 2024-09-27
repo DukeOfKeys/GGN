@@ -1,4 +1,4 @@
-#include "GGN.h"
+#include "GGN_lib.h"
 GGN *GGN_i()
 {
     GGN *GGN_num = malloc(sizeof(GGN));
