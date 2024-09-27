@@ -298,6 +298,10 @@ int GGN_devide(GGN *GGN_n1, GGN *GGN_n2, GGN *GGN_result)
         }
     }
     GGN_set_GGN(result, GGN_result);
+    if (GGN_n1->sign != GGN_n2->sign)
+    {
+        GGN_result->sign = 1;
+    }
     free(result);
     free(minused);
     free(current_multiplier);
