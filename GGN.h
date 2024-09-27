@@ -72,4 +72,5 @@ int GGN_mult(GGN *GGN_n1, GGN *GGN_n2, GGN *GGN_result);
 
 int GGN_minus(GGN *GGN_n1, GGN *GGN_n2, GGN *GGN_result);
 
+int GGN_devide(GGN *GGN_n1, GGN *GGN_n2, GGN *GGN_result);
 #endif

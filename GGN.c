@@ -243,3 +243,57 @@ int GGN_minus(GGN *GGN_n1, GGN *GGN_n2, GGN *GGN_result)
     }
     return 1;
 }
+
+int GGN_devide(GGN *GGN_n1, GGN *GGN_n2, GGN *GGN_result)
+{
+    if (GGN_n1_compare_with_n2(GGN_n2, GGN_n1) == 1)
+    {
+        GGN_set_int(GGN_result, 0);
+        return 1;
+    }
+    if (!GGN_n1_compare_with_n2(GGN_n2, GGN_n1))
+    {
+        GGN_set_int(GGN_result, 1);
+        return 1;
+    }
+    GGN *result = GGN_init_int(0);
+
+    GGN *minused = GGN_init_int(0);
+
+    GGN *current_multiplier = GGN_init_int(0);
+
+    GGN *curernt_devisor = GGN_i();
+    GGN_set_GGN(GGN_n2, curernt_devisor);
+
+    GGN *toBeDevised = GGN_i();
+    GGN_set_GGN(GGN_n1, toBeDevised);
+
+    while (GGN_n1_compare_with_n2(toBeDevised, GGN_n2) == 1)
+    {
+        if (toBeDevised->length > GGN_n2->length + 1)
+        {
+            GGN_set_int(current_multiplier, 1);
+            GGN_mult_pow_10(current_multiplier, toBeDevised->length - GGN_n2->length - 1);
+            GGN_sum(current_multiplier, result, result);
+            GGN_mult(current_multiplier, GGN_n2, curernt_devisor);
+            GGN_minus(toBeDevised, curernt_devisor, toBeDevised);
+        }
+        else
+        {
+            for (int counter = 9; counter > 0; counter--)
+            {
+                GGN_set_int(current_multiplier, counter);
+                GGN_mult(current_multiplier, GGN_n2, curernt_devisor);
+                int compare = GGN_n1_compare_with_n2(toBeDevised, curernt_devisor);
+                if (compare == 1 || compare == 0)
+                {
+                    GGN_sum(current_multiplier, result, result);
+                    GGN_minus(toBeDevised, curernt_devisor, toBeDevised);
+                    break;
+                }
+            }
+        }
+    }
+    GGN_set_GGN(result, GGN_result);
+    return 1;
+}
