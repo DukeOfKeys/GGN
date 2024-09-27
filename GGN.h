@@ -66,7 +66,7 @@ GGN *GGN_i();
 /// @return you know it
 GGN *GGN_init_int(int num);
 
-int GGN_mult_pow_10(GGN *, int power_of_10);
+int GGN_mult_pow_10(GGN *, unsigned long long power_of_10);
 
 int GGN_mult(GGN *GGN_n1, GGN *GGN_n2, GGN *GGN_result);
 
