@@ -61,6 +61,7 @@ int GGN_n_add_int(GGN *GGN_n, int num, GGN *result);
 /// @return ptr to the struct (memory is allocated only in this function)
 GGN *GGN_i();
 
+int GGN_free(GGN *n1);
 /// @brief The most recomended function for init
 /// @param num
 /// @return you know it
