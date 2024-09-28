@@ -11,6 +11,12 @@ GGN *GGN_i()
     GGN_num->sign = 0;
     return GGN_num;
 }
+int GGN_free(GGN *n1){
+    free(n1);
+    if(n1)
+        return 0;
+    return 1;
+}
 int GGN_sum(GGN *n1, GGN *n2, GGN *result)
 {
     if (n1->sign && !n2->sign)
