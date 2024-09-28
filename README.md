@@ -60,8 +60,8 @@ int main()
     }
 
     // Free allocated memory
-    free(two);
-    free(current_power);
+    GGN_free(two);
+    GGN_free(current_power);
 
     return 0;
 }
