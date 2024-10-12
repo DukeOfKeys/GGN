@@ -4,17 +4,32 @@ GGN *GGN_i()
     GGN *GGN_num = malloc(sizeof(GGN));
     if (GGN_num == NULL)
     {
-        abort();
+        exit(1);
     }
     GGN_num->length = 0;
-    GGN_set_char_to_all(GGN_num, 0);
+    GGN_setZero(GGN_num);
     GGN_num->sign = 0;
     return GGN_num;
 }
-int GGN_free(GGN *n1){
+GGN *GGN_init_GGN(GGN *GGN_n)
+{
+    GGN *GGN_num = GGN_i();
+    GGN_set_GGN(GGN_n, GGN_num);
+    return GGN_num;
+}
+int GGN_free(GGN *n1)
+{
     free(n1);
-    if(n1)
+    if (n1)
         return 0;
+    return 1;
+}
+int GGN_free_all(int ammount, ...)
+{
+    va_list pointers_all;
+    va_start(pointers_all, ammount);
+    for (; ammount > 0; ammount--)
+        free(va_arg(pointers_all, GGN *));
     return 1;
 }
 int GGN_sum(GGN *n1, GGN *n2, GGN *result)
@@ -71,9 +86,9 @@ GGN *GGN_init(const char *string_number)
     }
     return GGN_num;
 };
-void GGN_set_char_to_all(GGN *GGN_n, unsigned char n)
+void GGN_setZero(GGN *GGN_n)
 {
-    memset(GGN_n, n, GGN_MAX_NUM_LEN);
+    memset(GGN_n->number, 0, GGN_MAX_NUM_LEN);
 }
 void GGN_print(GGN *GGN_n)
 {
@@ -114,7 +129,7 @@ int GGN_set_int(GGN *GGN_n, int number)
 
         GGN_n->sign = 0;
 
-    GGN_set_char_to_all(GGN_n, 0);
+    GGN_setZero(GGN_n);
 
     GGN_n->length = number ? log10(number) + 1 : 1;
     for (int index = 0; index < GGN_n->length; index++)
@@ -126,7 +141,7 @@ int GGN_set_int(GGN *GGN_n, int number)
 }
 int GGN_set_GGN(GGN *GGN_n1, GGN *GGN_n2)
 {
-    GGN_set_char_to_all(GGN_n2, 0);
+    GGN_setZero(GGN_n2);
     GGN_n2->length = GGN_n1->length;
     GGN_n2->sign = GGN_n1->sign;
     for (int index = 0; index < GGN_n2->length; index++)
@@ -165,6 +180,13 @@ int GGN_n_add_int(GGN *GGN_n, int num, GGN *result)
 }
 int GGN_mult(GGN *GGN_n1, GGN *GGN_n2, GGN *GGN_result)
 {
+    if ((GGN_n1->length == 0) || (GGN_n2->length == 0))
+    {
+        GGN_setZero(GGN_result);
+        GGN_result->length = 0;
+        GGN_result->sign = 0;
+        return 1;
+    }
     GGN *GGN_result_oper = GGN_init_int(0);
     GGN *GGN_final = GGN_init_int(0);
     for (int index = 0; index < GGN_n2->length; index++)
@@ -202,6 +224,7 @@ int GGN_mult_pow_10(GGN *GGN_n, unsigned long long power_of_10)
     GGN_n->length += power_of_10;
     return 1;
 }
+
 GGN *GGN_init_int(int num)
 {
     GGN *GGN_num = GGN_i();
@@ -237,7 +260,8 @@ int GGN_minus(GGN *GGN_n1, GGN *GGN_n2, GGN *GGN_result)
     }
     int next = 0;
     int result = 0;
-    for (int index = 0; (index <= GGN_n1->length || index <= GGN_n2->length) && index < GGN_MAX_NUM_LEN; index++)
+    int length_n1 = GGN_n1->length;
+    for (int index = 0; (index < length_n1 || index < GGN_n2->length) && index < GGN_MAX_NUM_LEN; index++)
     {
         result = o1->number[index] - o2->number[index] + next;
         next = 0;
@@ -247,7 +271,7 @@ int GGN_minus(GGN *GGN_n1, GGN *GGN_n2, GGN *GGN_result)
             result += 10;
         }
         GGN_result->number[index] = result;
-        if (GGN_result->number[index] > 0)
+        if (result)
             GGN_result->length = index + 1;
     }
     return 1;
@@ -308,10 +332,78 @@ int GGN_devide(GGN *GGN_n1, GGN *GGN_n2, GGN *GGN_result)
     {
         GGN_result->sign = 1;
     }
-    free(result);
-    free(minused);
-    free(current_multiplier);
-    free(curernt_devisor);
-    free(toBeDevised);
+    GGN_free_all(5, result, minused, current_multiplier, curernt_devisor, toBeDevised);
+    return 1;
+}
+int GGN_devide_pow_10(GGN *GGN_n, unsigned long long power_of_10)
+{
+    if (!power_of_10)
+        return 1;
+    if (GGN_n->length < power_of_10)
+        power_of_10 = GGN_n->length;
+
+    for (int index = power_of_10; index < GGN_n->length; index++)
+        GGN_n->number[index - power_of_10] = GGN_n->number[index];
+    for (int index = GGN_n->length - power_of_10; index < GGN_n->length; index++)
+        GGN_n->number[index] = 0;
+
+    GGN_n->length -= power_of_10;
+    return 1;
+}
+int _lib_GGN_second_part(GGN *GGN_n, unsigned long long second)
+{
+    unsigned long long second_input = second;
+    while (second < GGN_n->length)
+        GGN_n->number[second++] = 0;
+    GGN_n->length = second_input > GGN_n->length ? GGN_n->length : second_input;
+    return 1;
+}
+// Karatsuba multiplication
+int _beta_GGN_effective_mult(GGN *GGN_n1, GGN *GGN_n2, GGN *GGN_result)
+{
+    if ((GGN_n1->length <= 2) || (GGN_n2->length <= 2))
+    {
+        GGN_mult(GGN_n1, GGN_n2, GGN_result);
+        return 1;
+    }
+
+    GGN *n1_cp = GGN_init_GGN(GGN_n1);
+    GGN *n2_cp = GGN_init_GGN(GGN_n2);
+
+    int second_length;
+    if (n1_cp->length > n2_cp->length)
+        second_length = n1_cp->length - n1_cp->length / 2;
+    else
+        second_length = n2_cp->length - n2_cp->length / 2;
+
+    GGN *mult_1 = GGN_init_GGN(n1_cp);
+    GGN *mult_2 = GGN_init_GGN(n2_cp);
+
+    GGN_devide_pow_10(n1_cp, second_length);
+    _lib_GGN_second_part(mult_1, second_length);
+    GGN_devide_pow_10(n2_cp, second_length);
+    _lib_GGN_second_part(mult_2, second_length);
+
+    GGN *ab = GGN_i();
+    _beta_GGN_effective_mult(n1_cp, n2_cp, ab);
+    GGN *a0b0 = GGN_i();
+    _beta_GGN_effective_mult(mult_1, mult_2, a0b0);
+
+    GGN_sum(n1_cp, mult_1, mult_1);
+    GGN_sum(n2_cp, mult_2, mult_2);
+
+    _beta_GGN_effective_mult(mult_1, mult_2, mult_1);
+
+    GGN_minus(mult_1, ab, mult_1);
+    GGN_minus(mult_1, a0b0, mult_1);
+
+    GGN_mult_pow_10(ab, second_length * 2);
+    GGN_mult_pow_10(mult_1, second_length);
+
+    GGN_set_GGN(ab, GGN_result);
+    GGN_sum(a0b0, GGN_result, GGN_result);
+    GGN_sum(mult_1, GGN_result, GGN_result);
+
+    GGN_free_all(6, mult_1, mult_2, n1_cp, n2_cp, ab, a0b0);
     return 1;
 }

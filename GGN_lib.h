@@ -6,7 +6,9 @@
 #include <string.h>
 #include <math.h>
 
-#define GGN_MAX_NUM_LEN 1000
+#include <stdarg.h>
+// will be used later
+#define GGN_MAX_NUM_LEN 35000
 typedef struct GGN
 {
     unsigned char number[GGN_MAX_NUM_LEN];
@@ -26,10 +28,10 @@ int GGN_sum(GGN *GGN_n1, GGN *GGN_n2, GGN *GGN_result);
 /// @return Returns a pointer to struct with number
 GGN *GGN_init(const char *string_number);
 
-/// @brief Sets one char to all places in the GGN number
+/// @brief Sets zeros to the type GGN
 /// @param GGN_n Pointer
 /// @param n Char (from '0' to '9' reccomended)
-void GGN_set_char_to_all(GGN *GGN_n, unsigned char n);
+void GGN_setZero(GGN *GGN_n);
 
 /// @brief Prints GGN number
 /// @param GGN_n GGN number
@@ -62,6 +64,9 @@ int GGN_n_add_int(GGN *GGN_n, int num, GGN *result);
 GGN *GGN_i();
 
 int GGN_free(GGN *n1);
+
+int GGN_free_all(int ammount, ...);
+
 /// @brief The most recomended function for init
 /// @param num
 /// @return you know it
@@ -74,4 +79,9 @@ int GGN_mult(GGN *GGN_n1, GGN *GGN_n2, GGN *GGN_result);
 int GGN_minus(GGN *GGN_n1, GGN *GGN_n2, GGN *GGN_result);
 
 int GGN_devide(GGN *GGN_n1, GGN *GGN_n2, GGN *GGN_result);
+
+int _lib_GGN_second_part(GGN *GGN_n, unsigned long long second_part_length);
+int GGN_devide_pow_10(GGN *GGN_n, unsigned long long power_of_10);
+int _beta_GGN_effective_mult(GGN *GGN_n1, GGN *GGN_n2, GGN *GGN_result);
+GGN *GGN_init_GGN(GGN *GGN_n);
 #endif

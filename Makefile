@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Werror -g
+CFLAGS = -Wall  -g -pg
 LIB_NAME = libGGN.a
 TARGET = GGN_lib.o
 
