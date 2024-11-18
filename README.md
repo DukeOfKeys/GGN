@@ -1,6 +1,6 @@
-# Great Great Numbers - Big Integer Library
+# Extremely Large Numbers - Large Numbers Library C
 
-The **GGN Big Integer Library** is a simple C library for handling arbitrarily large integers (big integers). It allows basic arithmetic operations such as addition, subtraction, multiplication, and division on numbers larger than standard data types can hold.
+The **LNLC - Large Numbers Library C** is a simple library for handling arbitrarily large integers (big integers). It allows basic arithmetic operations such as addition, subtraction, multiplication, and division on numbers larger than standard data types can hold.
 
 ## Features
 
@@ -21,14 +21,14 @@ make
 Add libGGN.a with GGN_lib.h to your project and compile:
 
 ```
-gcc  -o your_program your_program.c -I. ./libGGN.a
+gcc  -o your_program your_program.c -I. ./libeln.a
 ```
 
 ## Example Usage - Prints all powers of two untill given power
 
 ```c
 #include <stdio.h>
-#include "GGN_lib.h"
+#include "eln.h"
 
 int main()
 {
@@ -38,31 +38,35 @@ int main()
     printf("Enter the maximum power of 2: ");
     scanf("%d", &max_power);
 
-    // Initialize base (2) as a GGN number
-    GGN *two = GGN_init_int(2);
+    // Initialize base (2) as a El number
+    elNum *two = init_int_el(2);
 
-    GGN *current_power = GGN_init_int(1);
+    elNum *current_power = init_int_el(1);
 
     printf("2^0 = ");
-    GGN_print(current_power);
+    print_el(current_power);
     puts("");
 
     // Loop through all powers of 2 up to the max_power
     for (int i = 1; i <= max_power; i++)
     {
         // Multiply the current power by 2 to get the next power of 2
-        GGN_mult(current_power, two, current_power);
+        mult_el(current_power, two, current_power);
 
         // Print the result
         printf("2**%d = ", i);
-        GGN_print(current_power);
+        print_el(current_power);
         puts("");
     }
 
     // Free allocated memory
-    GGN_free(two);
-    GGN_free(current_power);
-
+    freen_el(2,two, current_power);
     return 0;
 }
 ```
+
+## TODO:
+
+EFFECTIVE MULTIPLICATION
+TESTS
+ERROR HANDELING

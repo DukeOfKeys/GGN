@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall  -g -pg
-LIB_NAME = libGGN.a
-TARGET = GGN_lib.o
+LIB_NAME = libeln.a
+TARGET =  eln.o
 
 
 all: $(LIB_NAME)
@@ -10,8 +10,8 @@ $(LIB_NAME): $(TARGET)
 	ar rcs $(LIB_NAME) $(TARGET)
 	rm $(TARGET)
 
-$(TARGET): GGN_lib.c GGN_lib.h
-	$(CC) $(CFLAGS) -c GGN_lib.c
+$(TARGET): eln.c eln.h
+	$(CC) $(CFLAGS) -c eln.c
 
 clean:
 	rm -f $(TARGET) $(LIB_NAME)
