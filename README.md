@@ -1,6 +1,6 @@
 # Extremely Large Numbers - Large Numbers Library C
 
-The **LNLC - Large Numbers Library C** is a simple library for handling arbitrarily large integers (big integers). It allows basic arithmetic operations such as addition, subtraction, multiplication, and division on numbers larger than standard data types can hold.
+The **ELN - Extremely Large Numbers Library C** is a simple library for handling arbitrarily large integers (big integers). It allows basic arithmetic operations such as addition, subtraction, multiplication, and division on numbers larger than standard data types can hold.
 
 ## Features
 
