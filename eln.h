@@ -8,7 +8,7 @@
 
 #define ELN_MAX_LEN 400000
 
-typedef unsigned char digit;
+typedef char digit;
 
 typedef struct elNum
 {

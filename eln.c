@@ -6,7 +6,7 @@ elNum *i_el()
         exit(EXIT_FAILURE);
 
     num->size = ELN_MAX_LEN;
-    num->number = (unsigned char *)calloc(1, num->size);
+    num->number = (digit *)calloc(1, num->size);
     if (!num->number)
         exit(EXIT_FAILURE);
     return num;
@@ -18,7 +18,7 @@ elNum *i_size_el(size_t n)
         exit(EXIT_FAILURE);
 
     num->size = n;
-    num->number = (unsigned char *)calloc(1, num->size);
+    num->number = (digit *)calloc(1, num->size);
     if (!num->number)
         exit(EXIT_FAILURE);
     return num;
@@ -221,24 +221,23 @@ int mult_el(elNum *n1, elNum *n2, elNum *result)
         int current_num = n2->number[index];
         if (current_num == 0)
             continue;
-        digit next_reg = 0;
         digit r_cur = 0;
         int g_index;
 
         for (g_index = 0; g_index < n1->length; g_index++)
         {
-            r_cur = final->number[g_index + index] + next_reg + n1->number[g_index] * current_num;
+            r_cur = final->number[g_index + index] + r_cur + n1->number[g_index] * current_num;
             final->number[g_index + index] = r_cur % 10;
-            next_reg = r_cur / 10;
+            r_cur = r_cur / 10;
         }
-        while (g_index + index < n1->length && next_reg)
+        while (g_index + index < n1->length && r_cur)
         {
-            r_cur = next_reg + n1->number[g_index + index];
+            r_cur = r_cur + n1->number[g_index + index];
             final->number[g_index + index] = r_cur % 10;
-            next_reg = r_cur / 10;
+            r_cur = r_cur / 10;
             g_index++;
         }
-        final->number[g_index + index] = next_reg;
+        final->number[g_index + index] = r_cur;
         final->length = final->number[g_index + index] ? g_index + 1 + index : g_index + index;
     }
     set_elNum_el(final, result);
@@ -251,10 +250,8 @@ int mltp10_el(elNum *n, unsigned long long power_of_10)
 {
     if (!(n->length + power_of_10 < ELN_MAX_LEN))
         return 0;
-    for (int index = n->length - 1; index >= 0; index--)
-        n->number[index + power_of_10] = n->number[index];
-    for (int index = 0; index < power_of_10; index++)
-        n->number[index] = 0;
+    memmove(n->number + power_of_10, n->number, n->length);
+    memset(n->number, 0, power_of_10);
     n->length += power_of_10;
     return 1;
 }
@@ -432,20 +429,22 @@ int _beta_effective_mult(elNum *n1, elNum *n2, elNum *result)
 
     _beta_lib_second_part(n2, second_length, &second_part_n2);
 
-    elNum *ab = i_el();
+    elNum *ab = i_size_el(first_part_n1.length + first_part_n2.length + second_length * 2);
+
     _beta_effective_mult(&first_part_n1, &first_part_n2, ab);
 
-    elNum *a0b0 = i_el();
+    elNum *a0b0 = i_size_el(second_part_n1.length + second_part_n2.length);
     _beta_effective_mult(&second_part_n1, &second_part_n2, a0b0);
 
-    elNum *sum_n1 = i_el();
-    elNum *sum_n2 = i_el();
+    elNum *sum_n1 = i_size_el((second_part_n1.length + second_part_n2.length + 2) * 2 + second_length);
+    elNum *sum_n2 = i_size_el(second_part_n2.length + 2);
     plus_el(&first_part_n1, &second_part_n1, sum_n1);
     plus_el(&first_part_n2, &second_part_n2, sum_n2);
 
     _beta_effective_mult(sum_n1, sum_n2, sum_n1);
 
     minus_el(sum_n1, ab, sum_n1);
+
     minus_el(sum_n1, a0b0, sum_n1);
 
     mltp10_el(ab, second_length * 2);
